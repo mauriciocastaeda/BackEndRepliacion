@@ -1,15 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const Lugar = require('../models/lugar');
-const { MongoClient } = require('mongodb');
 const db = require('../configs/db');
-
-//Para MongoDB
-//const uri = "mongodb+srv://mau:12345@clusterbase.a15zi3m.mongodb.net/Replicacion?retryWrites=true&w=majority";
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  const query = 'SELECT * FROM lugares';
+  const query = 'SELECT * FROM usuarios';
 
   db.query(query, (err, results) => {
     if (err) {
@@ -22,5 +17,5 @@ router.get('/', function(req, res, next) {
 
 });
 
-module.exports = router;
 
+module.exports = router;

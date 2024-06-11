@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-
+/*
 // Configuración de la conexión a MySQL
 const dbConfig = {
   host: 'localhost', // Cambia esto si tu servidor MySQL no está en localhost
@@ -48,3 +48,4 @@ async function obtenerDatosTablas() {
 
 // Exportar la función para usarla en otras partes del proyecto
 module.exports = { obtenerDatosTablas };
+*/

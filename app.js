@@ -6,6 +6,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 const mysql = require('mysql2');
+const db = require('./configs/db');
 
 /*
 const uri = "mongodb+srv://mau:12345@clusterbase.a15zi3m.mongodb.net/Replicacion?retryWrites=true&w=majority";
@@ -42,11 +43,14 @@ main().catch(console.error);
 
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usuariosRouter = require('./routes/usuarios');
 var lugaresRouter = require('./routes/lugares');
+var boletosRouter = require('./routes/boletos');
+var eventosRouter = require('./routes/eventos');
+var reservasRouter = require('./routes/reservas');
 
 var app = express();
-const port = 21500;
+const port = 22500;
 
 
 /*
@@ -70,14 +74,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/usuarios', usuariosRouter);
 app.use('/lugares', lugaresRouter);
+app.use('/boletos', boletosRouter);
+app.use('/eventos', eventosRouter);
+app.use('/reservas', reservasRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
+/*
 app.get('/datos', async (req, res) => {
   try {
     const datos = await obtenerDatosTablas();
@@ -86,7 +95,7 @@ app.get('/datos', async (req, res) => {
     res.status(500).json({ error: 'Error obteniendo datos de las tablas' });
   }
 });
-
+*/
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

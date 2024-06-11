@@ -4,7 +4,7 @@ const db = require('../configs/db');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    const query = 'SELECT * FROM boletos';
+    const query = 'SELECT * FROM eventos';
   
     db.query(query, (err, results) => {
       if (err) {
