@@ -1,25 +1,28 @@
-var express = require('express');
-var router = express.Router();
-const Lugar = require('../models/lugar');
-const { MongoClient } = require('mongodb');
-const db = require('../configs/db');
-
-//Para MongoDB
-//const uri = "mongodb+srv://mau:12345@clusterbase.a15zi3m.mongodb.net/Replicacion?retryWrites=true&w=majority";
+const express = require('express');
+const router = express.Router();
+const pool = require('../configs/db');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  const query = 'SELECT * FROM lugares';
-
-  db.query(query, (err, results) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al realizar la consulta:', err);
-      return res.status(500).json({ error: 'Error al obtener los datos de lugares' });
+      console.error('Error al obtener conexión del pool:', err);
+      return res.status(500).json({ error: 'Error interno del servidor' });
     }
 
-    res.json(results);
-  })
+    const query = 'SELECT * FROM Lugares';
+    connection.query(query, (err, results) => {
+      // Importante: siempre liberar la conexión después de usarla para evitar fugas de memoria
+      connection.release();
 
+      if (err) {
+        console.error('Error al realizar la consulta:', err);
+        return res.status(500).json({ error: 'Error al obtener los datos de usuarios' });
+      }
+
+      res.json(results);
+    });
+  });
 });
 
 module.exports = router;

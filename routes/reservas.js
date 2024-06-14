@@ -1,21 +1,28 @@
-var express = require('express');
-var router = express.Router();
-const db = require('../configs/db');
+const express = require('express');
+const router = express.Router();
+const pool = require('../configs/db');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  const query = 'SELECT * FROM reservas';
-
-  db.query(query, (err, results) => {
+  pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al realizar la consulta:', err);
-      return res.status(500).json({ error: 'Error al obtener los datos de lugares' });
+      console.error('Error al obtener conexión del pool:', err);
+      return res.status(500).json({ error: 'Error interno del servidor' });
     }
 
-    res.json(results);
-  })
+    const query = 'SELECT * FROM Reservas';
+    connection.query(query, (err, results) => {
+      // Importante: siempre liberar la conexión después de usarla para evitar fugas de memoria
+      connection.release();
 
+      if (err) {
+        console.error('Error al realizar la consulta:', err);
+        return res.status(500).json({ error: 'Error al obtener los datos de usuarios' });
+      }
+
+      res.json(results);
+    });
+  });
 });
-
 
 module.exports = router;
